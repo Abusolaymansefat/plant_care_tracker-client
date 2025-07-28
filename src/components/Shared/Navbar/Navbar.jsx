@@ -1,28 +1,17 @@
-import Container from '../Container'
-import { AiOutlineMenu } from 'react-icons/ai'
-import { FiSun, FiMoon } from 'react-icons/fi'
-import { useEffect, useState } from 'react'
-import { NavLink } from 'react-router'
-import useAuth from '../../../hooks/useAuth'
-import avatarImg from '../../../assets/images/placeholder.jpg'
-import logo from '../../../assets/images/logo-flat.png'
+import Container from "../Container";
+import { AiOutlineMenu } from "react-icons/ai";
+import { FiSun, FiMoon } from "react-icons/fi";
+import { useState } from "react";
+import { NavLink } from "react-router";
+import useAuth from "../../../hooks/useAuth";
+import avatarImg from "../../../assets/images/placeholder.jpg";
+import logo from "../../../assets/images/logo-flat.png";
+import { useTheme } from "../../../context/ThemeContext";
 
 const Navbar = () => {
-  const { user, logOut } = useAuth()
-  const [isOpen, setIsOpen] = useState(false)
-  const [darkMode, setDarkMode] = useState(
-    localStorage.getItem('theme') === 'dark'
-  )
-
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add('dark')
-      localStorage.setItem('theme', 'dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-      localStorage.setItem('theme', 'light')
-    }
-  }, [darkMode])
+  const { user, logOut } = useAuth();
+  const [isOpen, setIsOpen] = useState(false);
+  const { darkMode, setDarkMode } = useTheme();
 
   return (
     <div className="fixed w-full z-10 shadow-sm bg-white dark:bg-gray-900 transition">
@@ -50,14 +39,12 @@ const Navbar = () => {
               {/* Dropdown Menu */}
               <div className="relative">
                 <div className="flex flex-row items-center gap-3">
-                  {/* Dropdown btn */}
                   <div
                     onClick={() => setIsOpen(!isOpen)}
-                    className="p-4 md:py-1 md:px-2 border-[1px] border-[#a38f7f] dark:border-gray-600 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition"
+                    className="p-4 md:py-1 md:px-2 border-[1px] border-neutral-200 dark:border-gray-600 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition"
                   >
-                    <AiOutlineMenu className="dark:text-[#f7f0ea]" />
+                    <AiOutlineMenu className="dark:text-white" />
                     <div className="hidden md:block">
-                      {/* Avatar */}
                       <img
                         className="rounded-full"
                         referrerPolicy="no-referrer"
@@ -75,28 +62,15 @@ const Navbar = () => {
                     <div className="flex flex-col cursor-pointer">
                       <NavLink
                         to="/"
-                        className={({ isActive }) =>
-                          `block md:hidden px-4 py-3 transition font-semibold ${
-                            isActive
-                              ? 'text-green-600 dark:text-green-400 border-b-2 border-green-600'
-                              : 'hover:bg-neutral-100 dark:hover:bg-gray-700'
-                          }`
-                        }
+                        className="px-4 py-3 hover:bg-neutral-100 dark:hover:bg-gray-700 transition font-semibold"
                       >
                         Home
                       </NavLink>
-
                       {user ? (
                         <>
                           <NavLink
                             to="/dashboard"
-                            className={({ isActive }) =>
-                              `px-4 py-3 transition font-semibold ${
-                                isActive
-                                  ? 'text-green-600 dark:text-green-400 border-b-2 border-green-600'
-                                  : 'hover:bg-neutral-100 dark:hover:bg-gray-700'
-                              }`
-                            }
+                            className="px-4 py-3 hover:bg-neutral-100 dark:hover:bg-gray-700 transition font-semibold"
                           >
                             Dashboard
                           </NavLink>
@@ -111,25 +85,13 @@ const Navbar = () => {
                         <>
                           <NavLink
                             to="/login"
-                            className={({ isActive }) =>
-                              `px-4 py-3 transition font-semibold ${
-                                isActive
-                                  ? 'text-green-600 dark:text-green-400 border-b-2 border-green-600'
-                                  : 'hover:bg-neutral-100 dark:hover:bg-gray-700'
-                              }`
-                            }
+                            className="px-4 py-3 hover:bg-neutral-100 dark:hover:bg-gray-700 transition font-semibold"
                           >
                             Login
                           </NavLink>
                           <NavLink
                             to="/signup"
-                            className={({ isActive }) =>
-                              `px-4 py-3 transition font-semibold ${
-                                isActive
-                                  ? 'text-green-600 dark:text-green-400 border-b-2 border-green-600'
-                                  : 'hover:bg-neutral-100 dark:hover:bg-gray-700'
-                              }`
-                            }
+                            className="px-4 py-3 hover:bg-neutral-100 dark:hover:bg-gray-700 transition font-semibold"
                           >
                             Sign Up
                           </NavLink>
@@ -144,7 +106,7 @@ const Navbar = () => {
         </Container>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
