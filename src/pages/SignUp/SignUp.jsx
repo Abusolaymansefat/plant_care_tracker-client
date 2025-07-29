@@ -35,6 +35,8 @@ const SignUp = () => {
     } catch (err) {
       console.log(err)
       toast.error(err?.message)
+    } finally{
+      console.log('sefat')
     }
   }
 
