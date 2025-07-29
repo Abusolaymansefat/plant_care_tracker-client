@@ -16,7 +16,7 @@ const Sidebar = () => {
   const { logOut } = useAuth()
   const [isActive, setActive] = useState(false)
 
-  // Sidebar Responsive Handler
+  // Sidebar Responsuantity	ive Handler
   const handleToggle = () => {
     setActive(!isActive)
   }
@@ -29,7 +29,7 @@ const Sidebar = () => {
             <Link to='/'>
               <img
                 // className='hidden md:block'
-                src='https://i.ibb.co/4ZXzmq5/logo.png'
+                src={logo}
                 alt='logo'
                 width='100'
                 height='100'
