@@ -54,11 +54,7 @@ const PurchaseModal = ({ closeModal, isOpen, plant }) => {
     }));
   };
 
-  const handleOrder = () => {
-    toast.success("Order placed successfully!");
-    console.log(orderData);
-    closeModal();
-  };
+   
 
   return (
     <Dialog open={isOpen} as="div" className="relative z-10" onClose={closeModal}>
@@ -96,12 +92,7 @@ const PurchaseModal = ({ closeModal, isOpen, plant }) => {
               <p className="text-sm text-gray-500">Total Price: $ {totalPrice}</p>
             </div>
 
-            <button
-              onClick={handleOrder}
-              className="mt-4 w-full py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
-            >
-              Order Now
-            </button>
+            {/* Stripe checkout from  */}
           </DialogPanel>
         </div>
       </div>
