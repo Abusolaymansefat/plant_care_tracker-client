@@ -1,13 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import "./CheckoutForm";
 import { CircleLoader } from "react-spinners";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useAuth from "../../hooks/useAuth";
 
-const CheckoutForm = ({ totalPrice }) => {
+const CheckoutForm = ({ totalPrice, closeModal, orderData }) => {
+  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
   const stripe = useStripe();
   const elements = useElements();
   const [cardError, setCardError] = useState(null);
   const [processing, setProcessing] = useState(false);
+  const [clientSecret, setClientSecret] = useState("");
+
+  useEffect(() => {
+    const getClintSecret = async () => {
+      //server request
+      const { data } = await axiosSecure.post("/create-payment-intent", {
+        quantity: orderData?.quantity,
+        plantId: orderData?.plantId,
+      });
+      setClientSecret(data?.clientSecret);
+    };
+    getClintSecret();
+  }, [axiosSecure, orderData]);
 
   const handleSubmit = async (event) => {
     setProcessing(true);
@@ -39,6 +56,17 @@ const CheckoutForm = ({ totalPrice }) => {
       setCardError(null);
       // এখানে আপনি backend-এ paymentMethod.id পাঠাবেন
       // এবং paymentIntent তৈরি করবেন
+
+      const result = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card,
+          billing_details: {
+            name: user?.displayName,
+            email: user?.email,
+          },
+        },
+      });
+      console.log(result)
     }
   };
 
@@ -76,6 +104,7 @@ const CheckoutForm = ({ totalPrice }) => {
         </button>
 
         <button
+          onClick={closeModal}
           type="button"
           className="w-full bg-red-700 text-white py-2 rounded hover:bg-green-700"
         >
