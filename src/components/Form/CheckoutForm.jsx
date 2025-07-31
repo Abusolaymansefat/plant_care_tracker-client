@@ -4,6 +4,7 @@ import "./CheckoutForm";
 import { CircleLoader } from "react-spinners";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const CheckoutForm = ({ totalPrice, closeModal, orderData }) => {
   const { user } = useAuth();
@@ -66,6 +67,28 @@ const CheckoutForm = ({ totalPrice, closeModal, orderData }) => {
           },
         },
       });
+
+      if(result?.error){
+        setCardError(result?.error?.message)
+        return
+      }
+      if(result?.paymentIntent?.status === "succeeded"){
+        orderData.transactionId = result?.paymentIntent?.id
+        try{
+            const {data } = await axiosSecure.post('/order', orderData)
+            if(data?.insertedId){
+                toast.success('order payment successfully!')
+            }
+        
+        } catch(err){
+            console.log(err)
+        } finally{
+            setProcessing(false)
+            setCardError(null)
+            closeModal()
+
+        }
+      }
       console.log(result)
     }
   };
