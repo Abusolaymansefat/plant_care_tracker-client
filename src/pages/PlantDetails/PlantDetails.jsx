@@ -3,11 +3,16 @@ import Heading from "../../components/Shared/Heading";
 import Button from "../../components/Shared/Button/Button";
 import PurchaseModal from "../../components/Modal/PurchaseModal";
 import { useState } from "react";
-import { useLoaderData } from "react-router";
+import { useLoaderData, useParams } from "react-router";
 import useAuth from "../../hooks/useAuth";
+import useRole from "../../hooks/useRole";
+import LoadingSpinner from "../../components/Shared/LoadingSpinner";
+import axios from "axios";
 
 const PlantDetails = () => {
   const { user } = useAuth();
+  const {id} = useParams()
+  const [role, isRoleLoading] = useRole();
   const plant = useLoaderData();
   let [isOpen, setIsOpen] = useState(false);
   if (!plant || typeof plant !== "object") return <p>sorry bro !!!</p>;
@@ -18,6 +23,13 @@ const PlantDetails = () => {
     setIsOpen(false);
   };
 
+  // fatch plant data 
+  const fetchPlant = async () => {
+    const {data} = axios(`${import.meta.env.VITE_API_URL}/plant/${id}`)
+    return data
+  }
+
+  if(isRoleLoading) return <LoadingSpinner/>
   return (
     <Container>
       <div className="mx-auto flex flex-col lg:flex-row justify-between w-full gap-12">
@@ -83,7 +95,7 @@ const PlantDetails = () => {
             <p className="font-bold text-3xl text-gray-500">Price: {price} </p>
             <div>
               <Button
-              disabled={!user || user?.email === seller?.email}
+              disabled={!user || user?.email === seller?.email || role !== 'customer'}
                 onClick={() => setIsOpen(true)}
                 label={user ? "Purchase" : "Login to Purchase"}
               />

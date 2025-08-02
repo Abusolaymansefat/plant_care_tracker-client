@@ -68,28 +68,31 @@ const CheckoutForm = ({ totalPrice, closeModal, orderData }) => {
         },
       });
 
-      if(result?.error){
-        setCardError(result?.error?.message)
-        return
+      if (result?.error) {
+        setCardError(result?.error?.message);
+        return;
       }
-      if(result?.paymentIntent?.status === "succeeded"){
-        orderData.transactionId = result?.paymentIntent?.id
-        try{
-            const {data } = await axiosSecure.post('/order', orderData)
-            if(data?.insertedId){
-                toast.success('order payment successfully!')
-            }
-        
-        } catch(err){
-            console.log(err)
-        } finally{
-            setProcessing(false)
-            setCardError(null)
-            closeModal()
-
+      if (result?.paymentIntent?.status === "succeeded") {
+        orderData.transactionId = result?.paymentIntent?.id;
+        try {
+          const { data } = await axiosSecure.post("/order", orderData);
+          if (data?.insertedId) {
+            toast.success("order payment successfully!");
+          }
+          const { data: result } = await axiosSecure.patch(
+            `/quantity-update/${orderData?.plantId}`,
+            { quantityToUpdate: orderData?.quantity, status: "decrease" }
+          );
+          console.log(result);
+        } catch (err) {
+          console.log(err);
+        } finally {
+          setProcessing(false);
+          setCardError(null);
+          closeModal();
         }
       }
-      console.log(result)
+      console.log(result);
     }
   };
 
