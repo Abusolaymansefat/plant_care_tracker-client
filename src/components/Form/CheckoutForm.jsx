@@ -6,7 +6,7 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
 
-const CheckoutForm = ({ totalPrice, closeModal, orderData }) => {
+const CheckoutForm = ({ totalPrice, closeModal, orderData, refetch }) => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const stripe = useStripe();
@@ -83,7 +83,11 @@ const CheckoutForm = ({ totalPrice, closeModal, orderData }) => {
             `/quantity-update/${orderData?.plantId}`,
             { quantityToUpdate: orderData?.quantity, status: "decrease" }
           );
-          console.log(result);
+          console.log(result)
+          // ✅ plant quantity refetch
+        if (refetch) {
+          refetch();
+        }
         } catch (err) {
           console.log(err);
         } finally {

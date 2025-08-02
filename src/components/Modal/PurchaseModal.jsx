@@ -10,7 +10,7 @@ import CheckoutForm from "../Form/CheckoutForm";
 // recreating the `Stripe` object on every render.
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK_KEY);
 
-const PurchaseModal = ({ closeModal, isOpen, plant }) => {
+const PurchaseModal = ({ closeModal, isOpen, plant, refetch }) => {
   const { user } = useAuth();
 
   const { name, category, price, _id, quantity, image, seller } = plant || {};
@@ -121,6 +121,7 @@ const PurchaseModal = ({ closeModal, isOpen, plant }) => {
                 totalPrice={totalPrice}
                 closeModal={closeModal}
                 orderData={orderData}
+                refetch={refetch}
               />
             </Elements>
           </DialogPanel>

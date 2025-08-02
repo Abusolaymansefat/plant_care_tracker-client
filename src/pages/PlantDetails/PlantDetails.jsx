@@ -3,18 +3,36 @@ import Heading from "../../components/Shared/Heading";
 import Button from "../../components/Shared/Button/Button";
 import PurchaseModal from "../../components/Modal/PurchaseModal";
 import { useState } from "react";
-import { useLoaderData, useParams } from "react-router";
+import {  useParams } from "react-router";
 import useAuth from "../../hooks/useAuth";
 import useRole from "../../hooks/useRole";
 import LoadingSpinner from "../../components/Shared/LoadingSpinner";
 import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 
 const PlantDetails = () => {
   const { user } = useAuth();
-  const {id} = useParams()
+  const { id } = useParams();
   const [role, isRoleLoading] = useRole();
-  const plant = useLoaderData();
-  let [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
+  
+
+  const {
+    data: plant,
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ['plant', id],
+    queryFn: async () => {
+      const { data } = await axios(
+        `${import.meta.env.VITE_API_URL}/plant/${id}`
+      );
+      return data;
+    },
+  });
+
+
+
   if (!plant || typeof plant !== "object") return <p>sorry bro !!!</p>;
   const { name, seller, image, description, category, price, _id, quantity } =
     plant || {};
@@ -23,13 +41,8 @@ const PlantDetails = () => {
     setIsOpen(false);
   };
 
-  // fatch plant data 
-  const fetchPlant = async () => {
-    const {data} = axios(`${import.meta.env.VITE_API_URL}/plant/${id}`)
-    return data
-  }
-
-  if(isRoleLoading) return <LoadingSpinner/>
+  
+  if (isRoleLoading || isLoading) return <LoadingSpinner />;
   return (
     <Container>
       <div className="mx-auto flex flex-col lg:flex-row justify-between w-full gap-12">
@@ -95,7 +108,9 @@ const PlantDetails = () => {
             <p className="font-bold text-3xl text-gray-500">Price: {price} </p>
             <div>
               <Button
-              disabled={!user || user?.email === seller?.email || role !== 'customer'}
+                disabled={
+                  !user || user?.email === seller?.email || role !== "customer"
+                }
                 onClick={() => setIsOpen(true)}
                 label={user ? "Purchase" : "Login to Purchase"}
               />
@@ -107,6 +122,7 @@ const PlantDetails = () => {
             plant={plant}
             closeModal={closeModal}
             isOpen={isOpen}
+            refetch={refetch}
           />
         </div>
       </div>
