@@ -11,9 +11,11 @@ export const ThemeProvider = ({ children }) => {
     if (darkMode) {
       document.documentElement.classList.add("dark");
       localStorage.setItem("theme", "dark");
+      document.documentElement.setAttribute("data-theme", "dark");
     } else {
       document.documentElement.classList.remove("dark");
       localStorage.setItem("theme", "light");
+      document.documentElement.setAttribute("data-theme", "light");
     }
   }, [darkMode]);
 
