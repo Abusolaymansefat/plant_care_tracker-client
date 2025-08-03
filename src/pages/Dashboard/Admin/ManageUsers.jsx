@@ -3,7 +3,6 @@ import UserDataRow from "../../../components/Dashboard/TableRows/UserDataRow";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import LoadingSpinner from "../../../components/Shared/LoadingSpinner";
 
-
 const ManageUsers = () => {
   const axiosSecure = useAxiosSecure();
 
@@ -23,7 +22,6 @@ const ManageUsers = () => {
 
   return (
     <div className="container mx-auto px-4 sm:px-8">
-     
       <div className="py-8">
         <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
           <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
@@ -46,7 +44,7 @@ const ManageUsers = () => {
               </thead>
               <tbody>
                 {users.map((user) => (
-                  <UserDataRow key={user?._id} user={user} refetch={refetch} />
+                  <UserDataRow key={user?._id} user={user} refetch ={refetch} />
                 ))}
               </tbody>
             </table>

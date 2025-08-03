@@ -1,11 +1,42 @@
 import { Button, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import toast from "react-hot-toast";
 
-const UpdateUserRoleModal = ({ isOpen, setIsOpen, role }) => {
+const UpdateUserRoleModal = ({ isOpen, setIsOpen, role, userEmail, refetch }) => {
   const [updatedRole, setUpdatedRole] = useState(role);
-  console.log(role)
+  const axiosSecure = useAxiosSecure();
+  console.log(role);
   function close() {
     setIsOpen(false);
+  }
+
+  // get data ==== useQuery
+  // update/add/delete === useMutation
+
+  const mutation = useMutation({
+    mutationFn: async (role) => {
+      const { data } = await axiosSecure.patch(
+        `/user/role/update/${userEmail}`,
+        { role }
+      );
+      return data;
+    },
+    onSuccess: data => {
+        console.log(data)
+        refetch()
+        toast.success('User Role updated SuccessFully')
+        setIsOpen(false)
+    },
+    onError: error => {
+        console.log(error)
+    }
+  });
+
+  const handleSubmit = e => {
+    e.preventDefault()
+    mutation.mutate(updatedRole)
   }
 
   return (
@@ -30,7 +61,7 @@ const UpdateUserRoleModal = ({ isOpen, setIsOpen, role }) => {
               >
                 Update User Role
               </DialogTitle>
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div>
                   <select
                     value={updatedRole}
