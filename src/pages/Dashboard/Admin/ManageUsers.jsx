@@ -9,7 +9,6 @@ const ManageUsers = () => {
   const {
     data: users = [],
     isLoading,
-    refetch,
   } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
@@ -44,7 +43,7 @@ const ManageUsers = () => {
               </thead>
               <tbody>
                 {users.map((user) => (
-                  <UserDataRow key={user?._id} user={user} refetch ={refetch} />
+                  <UserDataRow key={user?._id} user={user}  />
                 ))}
               </tbody>
             </table>

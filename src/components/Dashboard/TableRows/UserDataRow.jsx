@@ -1,7 +1,7 @@
 import { useState } from "react";
 import UpdateUserRoleModal from "../../Modal/UpdateUserRoleModal";
 
-const UserDataRow = ({ user, refetch }) => {
+const UserDataRow = ({ user }) => {
   const { email, role, status } = user;
   let [isOpen, setIsOpen] = useState(false);
   return (
@@ -13,7 +13,15 @@ const UserDataRow = ({ user, refetch }) => {
         <p className="text-gray-900 whitespace-no-wrap">{role}</p>
       </td>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <p className="text-red-500 whitespace-no-wrap">
+        <p
+          className={`${
+            status === "requested"
+              ? "text-green-500"
+              : status === "verified"
+              ? "text-yellow-500"
+              : "text-blue-500"
+          } whitespace-no-wrap`}
+        >
           {status ? status : "Unavailable"}
         </p>
       </td>
@@ -34,8 +42,7 @@ const UserDataRow = ({ user, refetch }) => {
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           role={role}
-          userEmail = {email}
-          refetch = {refetch}
+          userEmail={email}
         />
       </td>
     </tr>

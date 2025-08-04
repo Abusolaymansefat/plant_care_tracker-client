@@ -4,8 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 
 const useRole = () => {
   const { user, loading } = useAuth();
-  // const [role, setRole] = useState(null);
-  // const [isRoleLoading, setIsRoleLoading] = useState(true);
   const axiosSecure = useAxiosSecure();
 
   const {data: role, isLoading:isRoleLoading} = useQuery({
@@ -17,24 +15,6 @@ const useRole = () => {
     },
   });
   console.log(role, isRoleLoading)
-
-  // useEffect(() => {
-  //   const fetchUserRole = async () => {
-  //     if (!user) return setIsRoleLoading(false);
-  //     try {
-  //       const { data } = await axiosSecure(
-  //         `${import.meta.env.VITE_API_URL}/user/role/${user?.email}`
-  //       );
-  //       setRole(data?.role);
-  //       setIsRoleLoading(false);
-  //     } catch (err) {
-  //       console.log(err);
-  //     } finally {
-  //       setIsRoleLoading(false);
-  //     }
-  //   };
-  //   fetchUserRole();
-  // }, [user, axiosSecure]);
 
   return [role?.role, isRoleLoading];
 };
