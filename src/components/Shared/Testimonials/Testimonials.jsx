@@ -6,7 +6,7 @@ export default function Testimonials() {
     {
       id: 1,
       name: "Sarah Johnson",
-      image: "/img/user1.jpg",
+      image: "https://i.ibb.co.com/RKB7NLV/images-3.jpg",
       review:
         "This app helped me save my plants! The watering reminders are super helpful and easy to follow.",
       rating: 5,
@@ -14,7 +14,7 @@ export default function Testimonials() {
     {
       id: 2,
       name: "David Lee",
-      image: "/img/user2.jpg",
+      image: "https://i.ibb.co.com/prKNKfxD/smiling.webp",
       review:
         "I love the detailed plant care guides. As a beginner, I finally feel confident growing indoor plants.",
       rating: 4,
@@ -22,7 +22,7 @@ export default function Testimonials() {
     {
       id: 3,
       name: "Emma Watson",
-      image: "/img/user3.jpg",
+      image: "https://i.ibb.co.com/B54DvCNF/images-2.jpg",
       review:
         "Amazing experience! The community tips and care tracker feature keep my plants thriving.",
       rating: 5,
@@ -30,7 +30,7 @@ export default function Testimonials() {
     {
       id: 4,
       name: "Michael Brown",
-      image: "/img/user4.jpg",
+      image: "https://i.ibb.co.com/4RvmFLjt/images.jpg",
       review:
         "Great app for plant lovers! The reminders and guides are very easy to follow.",
       rating: 4,
@@ -38,7 +38,7 @@ export default function Testimonials() {
     {
       id: 5,
       name: "Sophia Martinez",
-      image: "/img/user5.jpg",
+      image: "https://i.ibb.co.com/TDwvZczS/images-1.jpg",
       review:
         "I’ve never had healthier plants before. The app is simple and very effective!",
       rating: 5,
