@@ -49,10 +49,8 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: (
-          <PrivateRoute>
-            <AdminRouter>
+          <PrivateRoute>          
               <Statistics />
-            </AdminRouter>
           </PrivateRoute>
         ),
       },

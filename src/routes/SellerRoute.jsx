@@ -8,7 +8,7 @@ const SellerRoute = ({ children }) => {
 
   if (isRoleLoading) return <LoadingSpinner />
   if (role === 'seller') return children
-  return <Navigate to='/'/>
+  return <Navigate to='/' replace='true'/>
 }
 
 export default SellerRoute

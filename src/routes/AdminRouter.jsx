@@ -1,4 +1,3 @@
-
 import { Navigate } from 'react-router'
 import LoadingSpinner from '../components/Shared/LoadingSpinner'
 import useRole from '../hooks/useRole'
@@ -9,7 +8,7 @@ const AdminRouter = ({ children }) => {
 
   if (isRoleLoading) return <LoadingSpinner />
   if (role === 'admin') return children
-  return <Navigate to='/'/>
+  return <Navigate to='/' replace='true'/>
 }
 
 export default AdminRouter
