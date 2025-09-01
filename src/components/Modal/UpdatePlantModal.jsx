@@ -3,6 +3,7 @@ import UpdatePlantForm from "../Form/UpdatePlantForm";
 
 const UpdatePlantModal = ({ setIsEditModalOpen, isOpen, plant, onUpdate }) => {
   return (
+    
     <Dialog
       open={isOpen}
       as="div"

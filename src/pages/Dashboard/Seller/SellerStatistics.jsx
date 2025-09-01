@@ -59,7 +59,7 @@ const SellerStatistics = () => {
     };
 
     fetchStats();
-    const interval = setInterval(fetchStats, 10000); // auto refresh every 10s
+    const interval = setInterval(fetchStats, 10000); 
     return () => clearInterval(interval);
   }, [axiosSecure, user, role, isRoleLoading]);
 
@@ -72,7 +72,6 @@ const SellerStatistics = () => {
         Seller <span className="text-green-600">Statistics</span>
       </h2>
 
-      {/* Summary */}
       <div className="flex justify-around mb-12">
         <div className="text-center">
           <h3 className="text-xl font-semibold">Total Orders</h3>
@@ -83,8 +82,6 @@ const SellerStatistics = () => {
           <p className="text-2xl">{totals.totalRevenue}</p>
         </div>
       </div>
-
-      {/* Combined Revenue + Orders Chart */}
       <div>
         <h3 className="text-xl font-semibold mb-4">
           Revenue & Orders Over Time
