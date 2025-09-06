@@ -17,29 +17,35 @@ import useRole from "../../../hooks/useRole";
 
 const SellerStatistics = () => {
   const axiosSecure = useAxiosSecure();
-  const { user } = useAuth(); 
+  const { user } = useAuth();
   const [role, isRoleLoading] = useRole();
 
   const [chartData, setChartData] = useState([]);
   const [totals, setTotals] = useState({ totalOrder: 0, totalRevenue: 0 });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!isRoleLoading && role !== "seller") return;
+    if (isRoleLoading) return;
+    if (role !== "seller") return;
     if (!user?.email) return;
 
     const fetchStats = async () => {
       try {
+        setLoading(true);
         const res = await axiosSecure.get(`/order/seller/${user.email}`);
-        const orders = res.data;
+        const orders = res.data || [];
 
-        // Filter paid orders only
-        const paidOrders = orders.filter((o) => o.status === "paid");
+        // skip cancelled orders
+        const validOrders = orders.filter((o) => o.status !== "Cancelled");
 
-        // Aggregate data by date
-        const aggData = paidOrders.reduce((acc, order) => {
-          const date = new Date(order.createdAt).toISOString().split("T")[0];
+        // aggregate by date using ObjectId timestamp
+        const aggData = validOrders.reduce((acc, order) => {
+          const date = new Date(parseInt(order._id.substring(0, 8), 16) * 1000)
+            .toISOString()
+            .split("T")[0];
+
           if (!acc[date]) acc[date] = { date, revenue: 0, order: 0 };
-          acc[date].revenue += order.price;
+          acc[date].revenue += order.price || 0;
           acc[date].order += 1;
           return acc;
         }, {});
@@ -48,22 +54,24 @@ const SellerStatistics = () => {
           (a, b) => new Date(a.date) - new Date(b.date)
         );
 
-        setChartData(finalData);
-
         const totalRevenue = finalData.reduce((sum, d) => sum + d.revenue, 0);
         const totalOrder = finalData.reduce((sum, d) => sum + d.order, 0);
+
+        setChartData(finalData);
         setTotals({ totalRevenue, totalOrder });
       } catch (err) {
         console.error(err);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchStats();
-    const interval = setInterval(fetchStats, 10000); 
+    const interval = setInterval(fetchStats, 10000); // auto refresh every 10s
     return () => clearInterval(interval);
   }, [axiosSecure, user, role, isRoleLoading]);
 
-  if (isRoleLoading) return <p>Loading...</p>;
+  if (isRoleLoading || loading) return <p className="text-center p-8">Loading...</p>;
   if (role !== "seller") return <Navigate to="/" replace />;
 
   return (
@@ -82,10 +90,9 @@ const SellerStatistics = () => {
           <p className="text-2xl">{totals.totalRevenue}</p>
         </div>
       </div>
+
       <div>
-        <h3 className="text-xl font-semibold mb-4">
-          Revenue & Orders Over Time
-        </h3>
+        <h3 className="text-xl font-semibold mb-4">Revenue & Orders Over Time</h3>
         <ResponsiveContainer width="100%" height={400}>
           <ComposedChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
