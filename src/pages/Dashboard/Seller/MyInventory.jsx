@@ -51,7 +51,18 @@ const MyInventory = () => {
               </thead>
               <tbody>
                 {plants.map((plant) => (
-                  <PlantDataRow key={plant._id} plant={plant} />
+                  <PlantDataRow
+                    key={plant._id}
+                    plant={plant}
+                    onDelete={(id) =>
+                      setPlants((prev) => prev.filter((p) => p._id !== id))
+                    }
+                    onUpdate={(updated) =>
+                      setPlants((prev) =>
+                        prev.map((p) => (p._id === updated._id ? updated : p))
+                      )
+                    }
+                  />
                 ))}
               </tbody>
             </table>

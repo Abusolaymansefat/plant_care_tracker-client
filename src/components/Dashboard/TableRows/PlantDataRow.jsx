@@ -2,69 +2,70 @@ import { useState } from "react";
 import DeleteModal from "../../Modal/DeleteModal";
 import UpdatePlantModal from "../../Modal/UpdatePlantModal";
 
-const PlantDataRow = ({ plant }) => {
+const PlantDataRow = ({ plant, onDelete, onUpdate }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   return (
     <tr>
+      {/* Image */}
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <div className="flex items-center">
-          <div className="flex-shrink-0">
-            <div className="block relative">
-              <img
-                alt={plant.name}
-                src={plant.image}
-                className="mx-auto object-cover rounded h-10 w-15"
-              />
-            </div>
-          </div>
-        </div>
+        <img
+          alt={plant.name}
+          src={plant.image}
+          className="mx-auto object-cover rounded h-10 w-15"
+        />
       </td>
+
+      {/* Name */}
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <p className="text-gray-900 whitespace-no-wrap">{plant.name}</p>
+        {plant.name}
       </td>
+
+      {/* Category */}
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <p className="text-gray-900 whitespace-no-wrap">{plant.category}</p>
+        {plant.category}
       </td>
+
+      {/* Price */}
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <p className="text-gray-900 whitespace-no-wrap">${plant.price}</p>
+        ${plant.price}
       </td>
+
+      {/* Quantity */}
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <p className="text-gray-900 whitespace-no-wrap">{plant.quantity}</p>
+        {plant.quantity}
       </td>
+
+      {/* Delete */}
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
         <span
           onClick={() => setIsOpen(true)}
-          className="relative cursor-pointer inline-block px-3 py-1 font-semibold text-green-900 leading-tight"
+          className="cursor-pointer px-3 py-1 text-red-600 font-semibold"
         >
-          <span
-            aria-hidden="true"
-            className="absolute inset-0 bg-red-200 opacity-50 rounded-full"
-          ></span>
-          <span className="relative">Delete</span>
+          Delete
         </span>
         <DeleteModal
           isOpen={isOpen}
           closeModal={() => setIsOpen(false)}
           plantId={plant._id}
+          onConfirm={() => onDelete(plant._id)}
         />
       </td>
+
+      {/* Update */}
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
         <span
           onClick={() => setIsEditModalOpen(true)}
-          className="relative cursor-pointer inline-block px-3 py-1 font-semibold text-green-900 leading-tight"
+          className="cursor-pointer px-3 py-1 text-green-600 font-semibold"
         >
-          <span
-            aria-hidden="true"
-            className="absolute inset-0 bg-green-200 opacity-50 rounded-full"
-          ></span>
-          <span className="relative">Update</span>
+          Update
         </span>
         <UpdatePlantModal
           isOpen={isEditModalOpen}
           setIsEditModalOpen={setIsEditModalOpen}
           plant={plant}
+          onUpdate={onUpdate}
         />
       </td>
     </tr>
